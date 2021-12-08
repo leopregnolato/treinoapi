@@ -18,13 +18,20 @@ namespace treinoapi.Controllers
         }
 
         [HttpGet]
-        public IActionResult PegarProdutos(){
-            return Ok(new {nome = "Leo Pregnolato", empresa = "GFT"});
+        public IActionResult Get(){
+            var produtos = database.Produtos.ToList();
+            return Ok(produtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult PegarProdutos(int id){
-            return Ok("Leo Pregnolato" + id);
+        public IActionResult Get(int id){
+            try{
+                Produto produto = database.Produtos.First(p => p.Id == id);
+                return Ok(produto);
+            }catch(Exception e){
+                Response.StatusCode = 404;
+                return new ObjectResult("");
+            }            
         }
 
         [HttpPost]
@@ -35,7 +42,21 @@ namespace treinoapi.Controllers
             database.Produtos.Add(p);
             database.SaveChanges();
 
-            return Ok(new {msg = "Você criou um novo produto:"});
+            Response.StatusCode = 201;
+            return new ObjectResult("");
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id){
+            try{
+                Produto produto = database.Produtos.First(p => p.Id == id);
+                database.Produtos.Remove(produto);
+                database.SaveChanges();
+                return Ok();
+            }catch(Exception e){
+                Response.StatusCode = 404;
+                return new ObjectResult("");
+            }
         }
 
         public class ProdutoTemp{
