@@ -36,6 +36,17 @@ namespace treinoapi.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody] ProdutoTemp pTemp){
+            /* Validação */
+            if(pTemp.Preco <= 0){
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "O preço do produto não pode ser menor ou igual a 0."});
+            }
+
+            if(pTemp.Nome.Length <= 1 ){
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "O nome do produto precisa ter mais de um caracter."});
+            }
+
             Produto p = new Produto();
             p.Nome = pTemp.Nome;
             p.Preco = pTemp.Preco;
@@ -44,6 +55,30 @@ namespace treinoapi.Controllers
 
             Response.StatusCode = 201;
             return new ObjectResult("");
+        }
+
+        [HttpPatch]
+        public IActionResult Patch([FromBody] Produto produto){
+            if(produto.Id > 0){
+                try{
+                    var p = database.Produtos.First(ptemp => ptemp.Id == produto.Id);
+                    if(p != null){
+                        p.Nome = produto.Nome != null ? produto.Nome : p.Nome;
+                        p.Preco = produto.Preco != 0 ? produto.Preco : p.Preco;
+                        database.SaveChanges();
+                        return Ok();
+                    }else{
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "Produto não encontrado."});
+                    }
+                }catch{
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "Produto não encontrado."});                  
+                }
+            }else{
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "O Id do produto é inválido!"});
+            }
         }
 
         [HttpDelete("{id}")]
