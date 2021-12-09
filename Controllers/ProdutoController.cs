@@ -5,16 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using treinoapi.Data;
 using treinoapi.Models;
+using treinoapi.HATEOAS;
+using Microsoft.EntityFrameworkCore;
 
 namespace treinoapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ProdutoController : ControllerBase
     {
         private readonly ApplicationDbContext database;
+        private HATEOAS.HATEOAS HATEOAS;
+
         public ProdutoController(ApplicationDbContext database){
             this.database = database;
+            HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/v1/produto");
+            HATEOAS.AddAction("GET_INFO","GET");
+            HATEOAS.AddAction("DELETE_PRODUCT","DELETE");
+            HATEOAS.AddAction("EDIT_PRODUCT","PATCH");   
         }
 
         [HttpGet]
@@ -27,8 +35,11 @@ namespace treinoapi.Controllers
         public IActionResult Get(int id){
             try{
                 Produto produto = database.Produtos.First(p => p.Id == id);
-                return Ok(produto);
-            }catch(Exception e){
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions();
+                return Ok(produtoHATEOAS);
+            }catch(Exception){
                 Response.StatusCode = 404;
                 return new ObjectResult("");
             }            
@@ -88,7 +99,7 @@ namespace treinoapi.Controllers
                 database.Produtos.Remove(produto);
                 database.SaveChanges();
                 return Ok();
-            }catch(Exception e){
+            }catch(Exception){
                 Response.StatusCode = 404;
                 return new ObjectResult("");
             }
@@ -97,6 +108,12 @@ namespace treinoapi.Controllers
         public class ProdutoTemp{
             public string Nome { get; set; }
             public float Preco { get; set; }
+        }
+
+        public class ProdutoContainer{
+
+            public Produto produto;            
+            public Link[] links;
         }
         
     }

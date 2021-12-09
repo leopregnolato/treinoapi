@@ -34,7 +34,7 @@ namespace treinoapi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "treinoapi", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "treinoapi", Version = "v1" });
             });
         }
 
@@ -43,14 +43,16 @@ namespace treinoapi
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();  
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "treinoapi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "treinoapi v1"));             
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -58,6 +60,8 @@ namespace treinoapi
             {
                 endpoints.MapControllers();
             });
+            
+
         }
     }
 }
