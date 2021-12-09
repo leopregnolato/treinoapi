@@ -112,8 +112,8 @@ namespace treinoapi.Controllers
 
         public class ProdutoContainer{
 
-            public Produto produto;            
-            public Link[] links;
+            public Produto produto { get; set; }          
+            public Link[] links { get; set; }
         }
         
     }
