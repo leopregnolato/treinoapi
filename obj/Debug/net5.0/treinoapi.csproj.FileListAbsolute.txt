@@ -36,3 +36,7 @@ C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\obj\D
 C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\obj\Debug\net5.0\ref\treinoapi.dll
 C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\obj\Debug\net5.0\treinoapi.pdb
 C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\obj\Debug\net5.0\treinoapi.genruntimeconfig.cache
+C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\LOPL\OneDrive - GFT Technologies SE\Documents\Workspace\treinoapi\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll

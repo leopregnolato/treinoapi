@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using treinoapi.Data;
 using treinoapi.Models;
+using System.Text;
+
+
 
 namespace treinoapi.Controllers
 {   
@@ -30,7 +35,16 @@ namespace treinoapi.Controllers
                 Usuario usuario = database.Usuarios.First(user => user.Email.Equals(credenciais.Email));
                 if(usuario != null){
                     if(usuario.Senha.Equals(credenciais.Senha)){
-                        return Ok("logado");
+                        string chaveDeSeguranca = "gft_band_rock_n_roll_!";
+                        var chaveSimetrica = new SymmetricSecurityKey(UTF8Encoding.UTF8.GetBytes(chaveDeSeguranca));
+                        var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica,SecurityAlgorithms.HmacSha256Signature);
+                        var JWT = new JwtSecurityToken(
+                            issuer: "startergft.com",
+                            expires: DateTime.Now.AddHours(1),
+                            audience: "usuario_comum",
+                            signingCredentials: credenciaisDeAcesso
+                        );
+                        return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
                     }else{
                         Response.StatusCode = 401;
                         return new ObjectResult("");
@@ -43,6 +57,10 @@ namespace treinoapi.Controllers
                 Response.StatusCode = 401;
                 return new ObjectResult("");
             }
+        }
+
+        private class Encoding
+        {
         }
     }
 }
