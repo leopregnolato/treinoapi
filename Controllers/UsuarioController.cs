@@ -8,13 +8,20 @@ using System.IdentityModel.Tokens.Jwt;
 using treinoapi.Data;
 using treinoapi.Models;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 
 
 namespace treinoapi.Controllers
 {   
     [Route("api/v1/[controller]")]
-    [ApiController]
+    [ApiController]    
     public class UsuarioController : ControllerBase
     {
         private readonly ApplicationDbContext database;

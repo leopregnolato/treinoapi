@@ -7,11 +7,13 @@ using treinoapi.Data;
 using treinoapi.Models;
 using treinoapi.HATEOAS;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace treinoapi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProdutoController : ControllerBase
     {
         private readonly ApplicationDbContext database;
