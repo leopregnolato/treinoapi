@@ -15,8 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-
-
+using System.Security.Claims;
 
 namespace treinoapi.Controllers
 {   
@@ -45,11 +44,19 @@ namespace treinoapi.Controllers
                         string chaveDeSeguranca = "gft_band_rock_n_roll_!";
                         var chaveSimetrica = new SymmetricSecurityKey(UTF8Encoding.UTF8.GetBytes(chaveDeSeguranca));
                         var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica,SecurityAlgorithms.HmacSha256Signature);
+                        
+                        var claims = new List<Claim>();
+                        claims.Add(new Claim("id",usuario.Id.ToString()));
+                        claims.Add(new Claim("Email",usuario.Email));
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                        
+                        
                         var JWT = new JwtSecurityToken(
                             issuer: "startergft.com",
                             expires: DateTime.Now.AddHours(1),
                             audience: "usuario_comum",
-                            signingCredentials: credenciaisDeAcesso
+                            signingCredentials: credenciaisDeAcesso,
+                            claims: claims
                         );
                         return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
                     }else{

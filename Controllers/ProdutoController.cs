@@ -13,7 +13,7 @@ namespace treinoapi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProdutoController : ControllerBase
     {
         private readonly ApplicationDbContext database;
@@ -26,6 +26,13 @@ namespace treinoapi.Controllers
             HATEOAS.AddAction("DELETE_PRODUCT","DELETE");
             HATEOAS.AddAction("EDIT_PRODUCT","PATCH");   
         }
+
+        [HttpGet("teste")]
+        public IActionResult TesteClaims(){            
+            return Ok(HttpContext.User.Claims.First(claim => claim.Type.ToString().Equals("Email", StringComparison.InvariantCultureIgnoreCase)).Value);
+        }
+
+
 
         [HttpGet]
         public IActionResult Get(){
